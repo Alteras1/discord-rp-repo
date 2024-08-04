@@ -1,0 +1,9 @@
+{
+  "name": "Guild of Heroes",
+  "description": "A guild of heroes that fight against the forces of evil. Discord???",
+  "channels_ordered": [
+    "introduction",
+    "character-template",
+    "characters"
+  ]
+}

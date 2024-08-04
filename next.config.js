@@ -7,6 +7,7 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   output: "export",
+  basePath: "/discord-rp-repo",
 };
 
 export default config;
