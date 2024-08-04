@@ -52,3 +52,14 @@ function processChannelMessages(messages: ModifiedMessage[]): ModifiedMessage[] 
 
   return topLevelMessages;
 }
+
+/**
+ * Function thats only used to help manually create the config.json files without needing to create a whole new node script
+ */
+export function getAllUsernamesFromAllChannelsInRoleplay(rp: string) {
+  const channels = getRoleplayConfigFromSlug(rp).channels_ordered;
+  const allMessages = channels.flatMap((channel) => {
+    return getChannelFromSlugs(rp, channel);
+  });
+  return [...new Set(allMessages.map((message) => message.userName))];
+}

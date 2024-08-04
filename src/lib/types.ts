@@ -4,6 +4,7 @@ export const ConfigJSONSchema = z.object({
   name: z.string(),
   description: z.string(),
   channels_ordered: z.string().array(),
+  user_nicknames: z.record(z.string(), z.string()),
 });
 
 export type ConfigJSON = typeof ConfigJSONSchema['_output'];
