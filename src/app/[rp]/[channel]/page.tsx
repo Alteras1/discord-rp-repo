@@ -1,7 +1,9 @@
+import Post from "~/components/post";
 import {
   getChannelFromSlugs,
   getRoleplayConfigFromSlug,
 } from "~/lib/data-process";
+import { toTitlecase } from "~/lib/utils";
 
 export async function generateStaticParams({
   params,
@@ -17,15 +19,14 @@ export default function RpPage({
 }: {
   params: { rp: string; channel: string };
 }) {
-  console.log("page", params);
   const channel = getChannelFromSlugs(params.rp, params.channel);
-  console.log(channel);
+  // console.log(channel);
   // console.log(config.channels_ordered);
   return (
     <div>
-      {params.channel}
-      {channel.map((post, index) => (
-        <div key={index}>{post.content}</div>
+      <h1>{toTitlecase(params.channel)}</h1>
+      {channel.map((post, index, arr) => (
+        <Post message={post} index={index} array={arr} key={index} />
       ))}
     </div>
   );

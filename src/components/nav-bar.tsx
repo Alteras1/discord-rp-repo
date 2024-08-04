@@ -11,9 +11,8 @@ export default function NavBar({
   menu: { text: string; href: string }[];
 }) {
   const pathname = usePathname();
-
   const highlightLink = (href: string) => {
-    return pathname !== "/" && href.includes(pathname)
+    return pathname !== "/" && pathname.includes(href)
       ? "text-foreground"
       : "text-foreground/60";
   };

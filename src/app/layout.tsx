@@ -2,7 +2,7 @@ import "~/styles/globals.css";
 
 import { type Metadata } from "next";
 import { ThemeProvider } from "~/components/theme-provider";
-import { Atkinson_Hyperlegible } from "next/font/google";
+import { Atkinson_Hyperlegible, Literata } from "next/font/google";
 import NavBar from "~/components/nav-bar";
 import {
   getRoleplayConfigFromSlug,
@@ -17,6 +17,13 @@ export const metadata: Metadata = {
 
 const hyperledgible = Atkinson_Hyperlegible({
   weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+
+const literata = Literata({
+  weight: ["400", "600", "700", "800"],
   style: ["normal", "italic"],
   subsets: ["latin", "latin-ext"],
   display: "swap",
@@ -38,7 +45,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const roleplays = getAllRoleplays();
   return (
-    <html lang="en" className={hyperledgible.className}>
+    <html lang="en" className={literata.className}>
       <body>
         <ThemeProvider
           attribute="class"

@@ -34,14 +34,14 @@ export const AttachmentSchema = z.object({
   width: z.number(),
   height: z.number(),
   content_type: z.string(),
-  content_scan_version: z.number(),
-  placeholder: z.string(),
-  placeholder_version: z.number()
+  content_scan_version: z.number().optional(),
+  placeholder: z.string().optional(),
+  placeholder_version: z.number().optional()
 });
 
 export const AuthorOrProviderSchema = z.object({
   name: z.string(),
-  url: z.string()
+  url: z.string().optional(),
 });
 
 export const ThumbnailSchema = z.object({
@@ -64,7 +64,7 @@ export const VideoSchema = z.object({
 export const MessageReferenceSchema = z.object({
   type: z.number(),
   channel_id: z.string(),
-  guild_id: z.string()
+  guild_id: z.string().optional(),
 });
 
 export const ThreadMetadataSchema = z.object({
@@ -90,13 +90,13 @@ export const EmbedSchema = z.object({
   type: z.string(),
   url: z.string(),
   title: z.string().optional(),
-  description: z.string(),
-  color: z.number(),
-  author: AuthorOrProviderSchema,
-  provider: AuthorOrProviderSchema,
-  thumbnail: ThumbnailSchema,
-  video: VideoSchema,
-  content_scan_version: z.number()
+  description: z.string().optional(),
+  color: z.number().optional(),
+  author: AuthorOrProviderSchema.optional(),
+  provider: AuthorOrProviderSchema.optional(),
+  thumbnail: ThumbnailSchema.optional(),
+  video: VideoSchema.optional(),
+  content_scan_version: z.number().optional(),
 });
 
 export const ThreadSchema = z.object({
@@ -154,3 +154,5 @@ export const MessageSchema = z.object({
 });
 
 export type Message = typeof MessageSchema['_output'];
+
+export type ModifiedMessage = Message & { thread_messages?: ModifiedMessage[]; };
