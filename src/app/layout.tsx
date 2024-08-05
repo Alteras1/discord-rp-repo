@@ -45,7 +45,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const roleplays = getAllRoleplays();
   return (
-    <html lang="en" className={literata.className}>
+    <html
+      lang="en"
+      className={literata.className + " scroll-pt-14 scroll-smooth"}
+    >
       <body>
         <ThemeProvider
           attribute="class"
@@ -54,6 +57,9 @@ export default function RootLayout({
         >
           <NavBar menu={roleplays} />
           {children}
+          <footer className="mt-4 h-8 w-full border-t-2 text-sm">
+            by Alteras
+          </footer>
         </ThemeProvider>
       </body>
     </html>

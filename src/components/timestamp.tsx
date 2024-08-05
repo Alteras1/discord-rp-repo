@@ -36,13 +36,13 @@ export default function Timestamp({
       <HoverCardTrigger>
         <time
           dateTime={timestamp.toUTCString()}
-          className="pointer-events-none text-sm text-muted-foreground"
+          className="pointer-events-none text-xs text-muted-foreground"
         >
-          {shortDate}
+          {style === "full" ? shortDate : time}
         </time>
       </HoverCardTrigger>
       <HoverCardContent className="w-auto p-1 text-sm" side="top">
-        {style === "full" ? fullDate : time}
+        {fullDate}
       </HoverCardContent>
     </HoverCard>
   );

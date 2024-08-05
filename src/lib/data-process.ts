@@ -1,9 +1,9 @@
 import fs from 'fs';
 import { sync } from 'glob';
 import path from 'path';
-import { ConfigJSONSchema, MessageSchema, User, type ModifiedMessage } from './types';
+import { ConfigJSONSchema, MessageSchema, type User, type ModifiedMessage, type ThreadStarter, isThreadStarter, AttachmentSchema } from './types';
 import { z } from 'zod';
-import { StaticImageData } from 'next/image';
+import { toSlug } from './utils';
 
 const LOCAL_PATH = 'data';
 
@@ -44,14 +44,27 @@ export function getChannelFromSlugs(rpSlug: string, channelSlug: string) {
 function processChannelMessages(messages: ModifiedMessage[]): ModifiedMessage[] {
   messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 
-  const threadStarters = messages.filter((message) => message.thread?.id);
+  const threadStarters = messages.filter((message) => message.thread?.id) as ThreadStarter[];
   threadStarters.forEach((thread) => {
     const threadMessages = messages.filter((message) => message.channel_id === thread.thread?.id);
     thread.thread_messages = threadMessages;
+    thread.thread_slug = toSlug(thread.thread.name);
   });
-  const topLevelMessages = messages.filter((message) => !threadStarters.some((t) => t.thread_messages?.includes(message)));
+  const topLevelMessages = messages.filter(
+    (message) => !threadStarters.some((t) => t.thread_messages?.includes(message))
+      && [0, 18, 19].includes(message.type));
 
   return topLevelMessages;
+}
+
+export function getThreadsFromChannel(rpSlug: string, channelSlug: string) {
+  const channel = getChannelFromSlugs(rpSlug, channelSlug);
+  return channel.filter(isThreadStarter);
+}
+
+export function getThreadFromSlugs(rpSlug: string, channelSlug: string, threadSlug: string) {
+  const channel = getChannelFromSlugs(rpSlug, channelSlug);
+  return channel.find((message) => isThreadStarter(message) && message.thread_slug === threadSlug) as ThreadStarter;
 }
 
 /**
@@ -74,4 +87,15 @@ export function resolveAvatarImage(user: User, rpSlug: string) {
   }
   const ext = expectedPath[0]!.split('.').pop()!;
   return `/discord-rp-repo/data/${rpSlug}/avatars/${user.id}/${user.avatar}.${ext}`;
+}
+
+export function resolveAttachmentImage(attachment: typeof AttachmentSchema['_output'], rpSlug: string, channelSlug: string) {
+  const expectedPath = sync(`${dataPaths}/${rpSlug}/${channelSlug}/${channelSlug}_media/**/*${attachment.filename}*`);
+
+  if (expectedPath.length !== 1) {
+    console.error(`Expected 1 file for ${attachment.filename}, got ${expectedPath.length}`);
+    return '';
+  }
+  const path = expectedPath[0]!.replace(dataPaths, '');
+  return `/discord-rp-repo/data/${path}`;
 }

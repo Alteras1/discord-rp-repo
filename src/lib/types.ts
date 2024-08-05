@@ -158,4 +158,14 @@ export type User = typeof UserSchema['_output'];
 
 export type Message = typeof MessageSchema['_output'];
 
-export type ModifiedMessage = Message & { thread_messages?: ModifiedMessage[]; };
+export type ThreadStarter = Message & {
+  thread: typeof ThreadSchema['_output'];
+  thread_messages: Message[];
+  thread_slug: string;
+};
+
+export const isThreadStarter = (message: ModifiedMessage): message is ThreadStarter => {
+  return (message as ThreadStarter).thread !== undefined;
+};
+
+export type ModifiedMessage = Message | ThreadStarter;

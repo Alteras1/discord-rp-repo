@@ -18,8 +18,6 @@ export default async function UserAvatar({
       .map((n) => n[0])
       .join("");
   }
-  // `/discord-rp-repo/public/${rpSlug}/${user.id}/${user.avatar}.png`
-  console.log(user);
 
   const profilePic = resolveAvatarImage(user, rpSlug);
   return (

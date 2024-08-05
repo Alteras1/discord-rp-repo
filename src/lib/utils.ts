@@ -8,3 +8,5 @@ export function cn(...inputs: ClassValue[]) {
 export const toTitlecase = (str: string) => str.replaceAll("-", " ").replace(/\b(\w)/g, (k) => k.toUpperCase());
 
 export const milliSecondsIn7Min = 1000 * 60 * 7;
+
+export const toSlug = (str: string) => str.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");;

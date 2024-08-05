@@ -3,8 +3,15 @@
   "description": "A guild of heroes that fight against the forces of evil. Discord???",
   "channels_ordered": [
     "introduction",
+    "lore-channel",
     "character-template",
-    "characters"
+    "characters",
+    "non-player-characters",
+    "fort-grey",
+    "the-wilderness",
+    "kingdom-of-albion",
+    "other",
+    "records-and-reports"
   ],
   "user_nicknames": {
     "birdsie": "Birdsie",

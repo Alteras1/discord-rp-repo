@@ -1,9 +1,11 @@
-import { type ModifiedMessage } from "~/lib/types";
+import { type Message } from "~/lib/types";
 import Timestamp from "./timestamp";
 import { milliSecondsIn7Min } from "~/lib/utils";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { markdownProps } from "~/lib/markdown-process";
 import UserAvatar from "./user-avatar";
+import { resolveAttachmentImage } from "~/lib/data-process";
+import Image from "next/image";
 
 export default async function Post({
   message,
@@ -11,12 +13,14 @@ export default async function Post({
   array,
   userNicknameMap,
   rpSlug,
+  channelSlug,
 }: {
-  message: ModifiedMessage;
+  message: Message;
   index: number;
-  array: ModifiedMessage[];
+  array: Message[];
   userNicknameMap: Record<string, string>;
   rpSlug: string;
+  channelSlug: string;
 }) {
   const timegap =
     message.timestamp.getTime() - (array[index - 1]?.timestamp.getTime() ?? 0);
@@ -24,41 +28,50 @@ export default async function Post({
     timegap > milliSecondsIn7Min ||
     message.userName !== array[index - 1]?.userName;
 
+  const displayAttachments = message.attachments.map((attachment, idx) => {
+    const path = resolveAttachmentImage(attachment, rpSlug, channelSlug);
+    return (
+      <Image
+        src={path}
+        width={attachment.width}
+        height={attachment.height}
+        alt={attachment.placeholder ?? ""}
+        key={idx}
+        className="rounded"
+      />
+    );
+  });
+
   return (
     <>
       <div
-        className="flex items-start gap-2 p-2 pl-0 hover:[&:not(:has([data-post]:hover))]:bg-muted"
+        className="group flex items-start p-2 pl-0 transition-[background-color] delay-0 duration-300 hover:bg-muted hover:delay-500"
         data-post
+        id={message.id}
       >
         <div className="flex w-16 justify-center">
-          <UserAvatar user={message.author} rpSlug={rpSlug} />
+          {showBreak && <UserAvatar user={message.author} rpSlug={rpSlug} />}
+          {!showBreak && (
+            <div className="opacity-0 transition delay-0 duration-300 group-hover:opacity-100 group-hover:delay-500">
+              <Timestamp timestamp={message.timestamp} style="short" />
+            </div>
+          )}
         </div>
-        <div className="flex-1">
-          <div>
-            {userNicknameMap[message.userName] ??
-              message.author.global_name ??
-              message.author.username}{" "}
-            <Timestamp timestamp={message.timestamp} style="full" />
-          </div>
+        <div className="min-h-4 flex-1">
+          {showBreak && (
+            <div className="leading-none">
+              {userNicknameMap[message.userName] ??
+                message.author.global_name ??
+                message.author.username}{" "}
+              <Timestamp timestamp={message.timestamp} style="full" />
+            </div>
+          )}
           <div className="prose max-w-full flex-1 break-words dark:prose-invert prose-code:text-wrap prose-hr:my-4">
             <MDXRemote {...markdownProps} source={message.content} />
           </div>
+          {displayAttachments}
         </div>
       </div>
-      {message.thread_messages && (
-        <div className="border-l-2 p-4">
-          {message.thread_messages.map((threadMessage, index) => (
-            <Post
-              message={threadMessage}
-              index={index}
-              array={message.thread_messages!}
-              userNicknameMap={userNicknameMap}
-              key={threadMessage.id}
-              rpSlug={rpSlug}
-            />
-          ))}
-        </div>
-      )}
     </>
   );
 }
