@@ -19,8 +19,6 @@ export default function RpPage({
 }) {
   const channel = getChannelFromSlugs(params.rp, params.channel);
   const user_nicknames = getRoleplayConfigFromSlug(params.rp).user_nicknames;
-  // console.log(channel);
-  // console.log(config.channels_ordered);
 
   const threadOrPost = (
     post: ModifiedMessage,

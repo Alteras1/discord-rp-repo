@@ -19,7 +19,7 @@ export default function RpNav({
       : "text-muted-foreground";
   };
   return (
-    <aside className="flex flex-col">
+    <aside className="sticky top-14 flex flex-col">
       <Link
         href={`/${rpSlug}`}
         className="mb-1 rounded-md px-2 py-1 font-semibold"

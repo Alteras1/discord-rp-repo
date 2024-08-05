@@ -6,6 +6,7 @@ import { markdownProps } from "~/lib/markdown-process";
 import UserAvatar from "./user-avatar";
 import { resolveAttachmentImage } from "~/lib/data-process";
 import Image from "next/image";
+import Emoji from "./emoji";
 
 export default async function Post({
   message,
@@ -70,6 +71,13 @@ export default async function Post({
             <MDXRemote {...markdownProps} source={message.content} />
           </div>
           {displayAttachments}
+          {message.reactions && (
+            <div className="mt-2 flex gap-1">
+              {message.reactions.map((reaction, idx) => (
+                <Emoji reaction={reaction} rpSlug={rpSlug} key={idx} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -99,3 +99,14 @@ export function resolveAttachmentImage(attachment: typeof AttachmentSchema['_out
   const path = expectedPath[0]!.replace(dataPaths, '');
   return `/discord-rp-repo/data/${path}`;
 }
+
+export function resolveEmojiImage(name: string, id: string, rpSlug: string) {
+  const expectedPath = sync(`${dataPaths}/${rpSlug}/**/${name}_${id}*`);
+
+  if (expectedPath.length !== 1) {
+    console.error(`Expected 1 file for ${name}, got ${expectedPath.length}`);
+    return '';
+  }
+  const path = expectedPath[0]!.replace(dataPaths, '');
+  return `/discord-rp-repo/data/${path}`;
+}

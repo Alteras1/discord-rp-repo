@@ -22,7 +22,6 @@ export default function ThreadPage({
   const thread = getThreadFromSlugs(params.rp, params.channel, params.thread);
   const user_nicknames = getRoleplayConfigFromSlug(params.rp).user_nicknames;
 
-  console.log(thread);
   return (
     <div>
       <h1 className="text-3xl">{thread.thread.name}</h1>
