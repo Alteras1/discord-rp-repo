@@ -1,8 +1,9 @@
 import fs from 'fs';
 import { sync } from 'glob';
 import path from 'path';
-import { ConfigJSONSchema, MessageSchema, type ModifiedMessage } from './types';
+import { ConfigJSONSchema, MessageSchema, User, type ModifiedMessage } from './types';
 import { z } from 'zod';
+import { StaticImageData } from 'next/image';
 
 const LOCAL_PATH = 'data';
 
@@ -62,4 +63,15 @@ export function getAllUsernamesFromAllChannelsInRoleplay(rp: string) {
     return getChannelFromSlugs(rp, channel);
   });
   return [...new Set(allMessages.map((message) => message.userName))];
+}
+
+export function resolveAvatarImage(user: User, rpSlug: string) {
+  const expectedPath = sync(`${dataPaths}/${rpSlug}/avatars/${user.id}/${user.avatar}.*`);
+
+  if (expectedPath.length !== 1) {
+    console.error(`Expected 1 file for ${user.id}/${user.avatar}, got ${expectedPath.length}`);
+    return '';
+  }
+  const ext = expectedPath[0]!.split('.').pop()!;
+  return `https://github.com/Alteras1/discord-rp-repo/blob/main/data/${rpSlug}/avatars/${user.id}/${user.avatar}.${ext}?raw=true`;
 }

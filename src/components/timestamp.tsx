@@ -16,7 +16,9 @@ export default function Timestamp({
 
   useEffect(() => {
     const datestring = timestamp.toLocaleDateString(undefined, {
-      dateStyle: "short",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
     });
     const fullDatestring = timestamp.toLocaleDateString(undefined, {
       dateStyle: "full",

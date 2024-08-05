@@ -32,20 +32,19 @@ export default function RpPage({
     <div>
       <h1 className="text-3xl">{toTitlecase(params.channel)}</h1>
       {channel.map((post, index, arr) => (
-        <>
-          <LocalDateGap
-            prevDate={arr[index - 1]?.timestamp}
-            nextDate={post.timestamp}
-            key={index}
-          />
-          <Post
-            message={post}
-            index={index}
-            array={arr}
-            key={index}
-            userNicknameMap={user_nicknames}
-          />
-        </>
+        // <LocalDateGap
+        //   prevDate={arr[index - 1]?.timestamp}
+        //   nextDate={post.timestamp}
+        //   key={post.id}
+        // />
+        <Post
+          message={post}
+          index={index}
+          array={arr}
+          key={post.id}
+          userNicknameMap={user_nicknames}
+          rpSlug={params.rp}
+        />
       ))}
     </div>
   );

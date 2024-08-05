@@ -8,6 +8,9 @@ await import("./src/env.js");
 const config = {
   output: "export",
   basePath: "/discord-rp-repo",
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default config;

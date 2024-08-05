@@ -154,6 +154,8 @@ export const MessageSchema = z.object({
   reactions: z.array(ReactionSchema).optional()
 });
 
+export type User = typeof UserSchema['_output'];
+
 export type Message = typeof MessageSchema['_output'];
 
 export type ModifiedMessage = Message & { thread_messages?: ModifiedMessage[]; };
