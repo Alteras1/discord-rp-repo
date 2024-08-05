@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { sync } from 'glob';
 import path from 'path';
-import { ConfigJSONSchema, MessageSchema, type User, type ModifiedMessage, type ThreadStarter, isThreadStarter, AttachmentSchema } from './types';
+import { ConfigJSONSchema, MessageSchema, type User, type ModifiedMessage, type ThreadStarter, isThreadStarter, type AttachmentSchema } from './types';
 import { z } from 'zod';
 import { toSlug } from './utils';
 
@@ -29,6 +29,18 @@ export function getRoleplayConfigFromSlug(slug: string) {
     channels_ordered: [...(new Set([...config.channels_ordered, ...channels]))],
     slug
   };
+}
+
+export function getRoleplayTree(slug: string): { name: string, threads: { name: string, slug: string; }[]; }[] {
+  const config = getRoleplayConfigFromSlug(slug);
+  const channels = config.channels_ordered.map((channel) => {
+    const threads = getThreadsFromChannel(slug, channel);
+    return {
+      name: channel,
+      threads: threads.map((t) => ({ name: t.content, slug: t.thread_slug })),
+    };
+  });
+  return channels;
 }
 
 export function getChannelFromSlugs(rpSlug: string, channelSlug: string) {

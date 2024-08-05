@@ -1,16 +1,11 @@
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import Post from "~/components/post";
 import {
   getChannelFromSlugs,
   getRoleplayConfigFromSlug,
 } from "~/lib/data-process";
-import { isThreadStarter, ModifiedMessage } from "~/lib/types";
+import { isThreadStarter, type ModifiedMessage } from "~/lib/types";
 import { toTitlecase } from "~/lib/utils";
-
-const LocalDateGap = dynamic(() => import("~/components/local-date-gap"), {
-  ssr: false,
-});
 
 export default function RpPage({
   params,

@@ -7,6 +7,7 @@ import NavBar from "~/components/nav-bar";
 import {
   getRoleplayConfigFromSlug,
   getRoleplayPaths,
+  getRoleplayTree,
 } from "~/lib/data-process";
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ function getAllRoleplays(): { text: string; href: string }[] {
     const config = getRoleplayConfigFromSlug(rp);
     return {
       text: config.name,
-      href: `/${rp}`,
+      href: `${rp}`,
     };
   });
 }
@@ -44,10 +45,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const roleplays = getAllRoleplays();
+  const fullTree = roleplays.map((rp) => ({
+    rp: rp,
+    channels: getRoleplayTree(rp.href),
+  }));
   return (
     <html
       lang="en"
       className={literata.className + " scroll-pt-14 scroll-smooth"}
+      suppressHydrationWarning
     >
       <body>
         <ThemeProvider
@@ -55,7 +61,7 @@ export default function RootLayout({
           defaultTheme="system"
           enableSystem={true}
         >
-          <NavBar menu={roleplays} />
+          <NavBar fullTree={fullTree} />
           {children}
           <footer className="mt-4 h-8 w-full border-t-2 text-sm">
             by Alteras

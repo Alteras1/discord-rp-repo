@@ -50,7 +50,7 @@ export default async function Post({
         data-post
         id={message.id}
       >
-        <div className="flex w-16 justify-center">
+        <div className="flex w-9 justify-center md:w-16">
           {showBreak && <UserAvatar user={message.author} rpSlug={rpSlug} />}
           {!showBreak && (
             <div className="opacity-0 transition delay-0 duration-300 group-hover:opacity-100 group-hover:delay-500">
