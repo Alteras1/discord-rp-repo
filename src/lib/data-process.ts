@@ -73,5 +73,5 @@ export function resolveAvatarImage(user: User, rpSlug: string) {
     return '';
   }
   const ext = expectedPath[0]!.split('.').pop()!;
-  return `https://github.com/Alteras1/discord-rp-repo/blob/main/data/${rpSlug}/avatars/${user.id}/${user.avatar}.${ext}?raw=true`;
+  return `/discord-rp-repo/data/${rpSlug}/avatars/${user.id}/${user.avatar}.${ext}`;
 }
